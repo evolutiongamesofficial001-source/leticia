@@ -7,8 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-:root{--bg:#f3f4f8;--card:#fff;--tx:#0f172a;--mut:#64748b;--pri:#4338ca;--soft:#eef0ff;--ok:#047857;--bad:#b91c1c;--bd:#e2e5ec;--side:#0f172a;--sh:0 1px 2px rgba(15,23,42,.05),0 6px 18px rgba(15,23,42,.04);--btn:#fff}
-@media(prefers-color-scheme:dark){:root{--bg:#0b0e14;--card:#131824;--tx:#e8ebf2;--mut:#8b94a7;--pri:#818cf8;--soft:#1d2140;--bd:#232a3a;--side:#090c12;--ok:#34d399;--bad:#f87171;--sh:none;--btn:#0b0e14}}
+:root{--bg:#f3f4f8;--card:#fff;--tx:#0f172a;--mut:#64748b;--pri:#4338ca;--soft:#eef0ff;--ok:#047857;--bad:#b91c1c;--bd:#e2e5ec;--side:#0f172a;--sh:0 1px 2px rgba(15,23,42,.05),0 6px 18px rgba(15,23,42,.04);--btn:#fff;--az:#1d4ed8}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0e14;--card:#131824;--tx:#e8ebf2;--mut:#8b94a7;--pri:#818cf8;--soft:#1d2140;--bd:#232a3a;--side:#090c12;--ok:#34d399;--bad:#f87171;--sh:none;--btn:#0b0e14;--az:#60a5fa}}
 *{box-sizing:border-box;margin:0;font-family:Manrope,system-ui,-apple-system,sans-serif}
 body{background:var(--bg);color:var(--tx);min-height:100vh;padding-bottom:78px;line-height:1.5;font-variant-numeric:tabular-nums}
 header{background:var(--side);color:#fff;display:flex;align-items:center;gap:12px;padding:16px 20px;padding-top:calc(16px + env(safe-area-inset-top))}
@@ -25,6 +25,8 @@ section{display:none}section.on{display:block}
 .ph{margin-bottom:18px}.ph h1{font-size:1.45rem;font-weight:800;letter-spacing:-.03em}.ph p{color:var(--mut);font-size:.88rem;margin-top:2px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:var(--sh)}
 .card h2{font-size:.95rem;font-weight:800;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
+.card .hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
+.card .hd h2{margin:0;padding:0;border:0}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
 .stats.grid{background:none;border:0;padding:0;box-shadow:none}
 .stat{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;box-shadow:var(--sh);display:flex;flex-direction:column-reverse}
@@ -37,15 +39,25 @@ input:focus,select:focus{outline:0;border-color:var(--pri);box-shadow:0 0 0 3px 
 button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 .btn{background:var(--pri);color:var(--btn);border:0;border-radius:10px;padding:12px 18px;font-size:.92rem;font-weight:700;cursor:pointer;width:100%;margin-top:16px;transition:filter .15s}
 .btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.5;cursor:not-allowed;filter:none}
 .btn.sec{background:var(--card);color:var(--tx);border:1px solid var(--bd);margin-top:10px}
 .btn.sec:hover{background:var(--bg);filter:none}
+.mini{background:none;border:1px solid var(--bd);color:var(--mut);font-size:.76rem;font-weight:700;padding:6px 11px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:.15s}
+.mini:hover{color:var(--tx);background:var(--bg)}
+.mini.bad{color:var(--bad);border-color:rgba(185,28,28,.3)}
+.mini.bad:hover{background:rgba(185,28,28,.08);color:var(--bad)}
 .row{display:flex;gap:8px;margin-bottom:8px}.row input{flex:1;min-width:0}
 .bar{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:.84rem}
 .bar i{width:56px;color:var(--mut);font-style:normal;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar div{height:8px;border-radius:4px;background:var(--pri);min-width:4px}
 .bar em{font-style:normal;font-weight:800}
-.hist{font-size:.86rem;padding:11px 0;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;gap:8px}
+.hist{font-size:.86rem;padding:10px 0;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px}
 .hist:last-child{border:0;padding-bottom:0}
+.hist .hi{flex:1;min-width:0}
+.hist .hi span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist .hi small{color:var(--mut);font-size:.74rem}
+.hist .x{border:0;background:none;color:var(--mut);cursor:pointer;font-size:1.15rem;line-height:1;width:30px;height:30px;border-radius:8px;flex:none}
+.hist .x:hover{color:var(--bad);background:rgba(185,28,28,.08)}
 .in{color:var(--ok)}.out{color:var(--bad)}
 .tog{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:11px;border:1px solid var(--bd)}
 .tog button{flex:1;padding:9px;border-radius:8px;border:0;background:none;color:var(--mut);font-size:.88rem;font-weight:700;cursor:pointer}
@@ -66,11 +78,38 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 .tot{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:1.3rem;letter-spacing:-.02em;margin-top:16px;padding-top:14px;border-top:2px solid var(--tx)}
 .chk{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:.85rem;font-weight:500}.chk input{width:auto;accent-color:var(--pri)}
 .empty{color:var(--mut);font-size:.86rem;padding:6px 0}
-#chat{height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
-.m{padding:10px 14px;border-radius:12px;max-width:85%;white-space:pre-wrap;font-size:.9rem}
-.m.u{align-self:flex-end;background:var(--pri);color:var(--btn);border-bottom-right-radius:4px}
-.m.a{align-self:flex-start;background:var(--bg);border:1px solid var(--bd);border-bottom-left-radius:4px}
+
+/* ===== S.A.R ===== */
+#chat{height:56vh;min-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;margin-bottom:12px;padding-right:2px;scroll-behavior:smooth}
+.m{padding:11px 15px;border-radius:14px;font-size:.92rem;line-height:1.6;word-wrap:break-word;overflow-wrap:anywhere}
+.m.u{align-self:flex-end;max-width:85%;background:var(--pri);color:var(--btn);border-bottom-right-radius:4px;white-space:pre-wrap}
+.m.a{align-self:flex-start;max-width:96%;background:var(--bg);border:1px solid var(--bd);border-bottom-left-radius:4px}
+.m.a>*:first-child{margin-top:0}.m.a>*:last-child{margin-bottom:0}
+.m.a p{margin:0 0 9px}
+.m.a strong,.az{color:var(--az);font-weight:800}
+.m.a em{font-style:italic}
+.m.a h4{font-size:.95rem;font-weight:800;margin:14px 0 6px;padding-bottom:5px;border-bottom:1px solid var(--bd);color:var(--tx)}
+.m.a ul,.m.a ol{margin:4px 0 10px;padding-left:20px}
+.m.a li{margin:3px 0;padding-left:2px}
+.m.a li::marker{color:var(--az);font-weight:800}
+.m.a hr{border:0;border-top:1px solid var(--bd);margin:12px 0}
+.m.a code{background:var(--soft);padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,monospace;font-size:.84em}
+.tw{overflow-x:auto;margin:6px 0 12px;border:1px solid var(--bd);border-radius:10px}
+.tw table{border-collapse:collapse;width:100%;font-size:.84rem}
+.tw th{background:var(--soft);text-align:left;font-weight:800;white-space:nowrap}
+.tw th,.tw td{padding:7px 11px;border-bottom:1px solid var(--bd)}
+.tw tr:last-child td{border-bottom:0}
+.dots{display:inline-flex;gap:4px;align-items:center;height:1.4em}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--mut);animation:pulse 1.1s infinite ease-in-out}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes pulse{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+.sug{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.sug::-webkit-scrollbar{display:none}
+.sug button{flex:none;background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:600;cursor:pointer;transition:.15s}
+.sug button:hover{border-color:var(--pri);color:var(--pri);background:var(--soft)}
 .send{display:flex;gap:8px}.send .btn{width:auto;margin:0}
+.send input{flex:1}
+
 #toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--tx);color:var(--card);padding:10px 18px;border-radius:10px;font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:.25s;z-index:20;pointer-events:none}
 #toast.show{opacity:1}
 @media(min-width:800px){
@@ -83,6 +122,7 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
  main{padding:36px 32px}
  .grid{grid-template-columns:repeat(4,1fr)}
  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+ #chat{height:60vh}
 }
 </style>
 </head>
@@ -108,7 +148,11 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
   <div class="card"><h2>Pares por tamanho</h2><div id="gTam"></div></div>
   <div class="card"><h2>Pares por marca</h2><div id="gMar"></div></div>
  </div>
- <div class="card"><h2>Últimas movimentações</h2><div id="hist"></div></div>
+ <div class="card">
+  <div class="hd"><h2>Últimas movimentações</h2><button class="mini bad" id="bLimpar" onclick="limparHist()">Limpar histórico</button></div>
+  <div id="hist"></div>
+  <button class="mini" id="bMais" style="display:none;margin-top:12px;width:100%" onclick="histAll=!histAll;render()"></button>
+ </div>
 </section>
 
 <section id="cad">
@@ -161,9 +205,17 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 
 <section id="ia">
  <div class="ph"><h1>Análise</h1><p>Pergunte sobre giro, tamanhos e histórico</p></div>
- <div class="card"><h2>S.A.R — Sistema de Análise de Resultados</h2>
-  <div id="chat"><div class="m a">S.A.R online. Pergunte sobre produtos, tamanhos, giro e histórico.</div></div>
-  <div class="send"><input id="q" placeholder="Pergunte sobre o estoque..." onkeydown="if(event.key==='Enter')perguntar()"><button class="btn" onclick="perguntar()">Enviar</button></div>
+ <div class="card">
+  <div class="hd"><h2>S.A.R — Sistema de Análise de Resultados</h2><button class="mini" onclick="limparChat()">Nova conversa</button></div>
+  <div id="chat"></div>
+  <div class="sug" id="sug">
+   <button onclick="sugerir(this)">Resumo geral do estoque</button>
+   <button onclick="sugerir(this)">Quais tamanhos estão acabando?</button>
+   <button onclick="sugerir(this)">Qual marca mais saiu?</button>
+   <button onclick="sugerir(this)">Quais produtos estão parados?</button>
+   <button onclick="sugerir(this)">O que devo reabastecer primeiro?</button>
+  </div>
+  <div class="send"><input id="q" placeholder="Pergunte sobre o estoque..." autocomplete="off" enterkeyhint="send" onkeydown="if(event.key==='Enter')perguntar()"><button class="btn" id="bSend" onclick="perguntar()">Enviar</button></div>
  </div>
 </section>
 </main>
@@ -182,7 +234,7 @@ const GROQ_KEY_ROT13="tfx_PNcOrIkEDg72Rxs9mZjSJTqlo3SLFzI9CAXYMZTZ6Q2NtfZq7kGP";
 const rot13=s=>s.replace(/[a-z]/gi,c=>{const b=c<='Z'?65:97;return String.fromCharCode((c.charCodeAt(0)-b+13)%26+b)});
 const MODELO_IA="openai/gpt-oss-20b";
 
-let base=null,produtos={},historico={},tipo='in',itens=[];
+let base=null,produtos={},historico={},tipo='in',itens=[],histAll=false,conv=[],busy=false;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
@@ -214,6 +266,7 @@ async function log(prod,tam,qtd,tp){
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('nav button,section').forEach(x=>x.classList.remove('on'));
  b.classList.add('on');$(b.dataset.p).classList.add('on');
+ if(b.dataset.p==='ia')setTimeout(()=>{$('chat').scrollTop=1e9},50);
 });
 
 // ====== RENDER ======
@@ -234,11 +287,30 @@ function render(){
  $('sTot').textContent=tot;$('sMod').textContent=lista.length;
  $('sMar').textContent=Object.keys(porMar).length;$('sBx').textContent=baixo;
  barras($('gTam'),porTam,true);barras($('gMar'),porMar);
- const h=Object.values(historico).sort((a,b)=>b.ts-a.ts).slice(0,8);
- $('hist').innerHTML=h.length?h.map(x=>`<div class="hist"><span>${esc(x.produto)} — tam ${esc(x.tamanho)}</span><b class="${x.tipo==='in'?'in':'out'}">${x.tipo==='in'?'+':'-'}${x.qtd}</b></div>`).join(''):'<p class="empty">Nenhuma movimentação</p>';
+ renderHist();
  const opts=Object.entries(produtos).map(([id,p])=>`<option value="${id}">${esc(p.marca)} - ${esc(p.modelo)}</option>`).join('');
  for(const s of ['eProd','nProd']){const sel=$(s),a=sel.value;sel.innerHTML=opts;if(produtos[a])sel.value=a}
  fillTam();fillNTam(true);renderLista();
+}
+function renderHist(){
+ const todos=Object.entries(historico).map(([id,x])=>({id,...x})).sort((a,b)=>b.ts-a.ts);
+ const h=histAll?todos:todos.slice(0,8);
+ $('hist').innerHTML=h.length?h.map(x=>{
+  const dt=new Date(x.ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  return `<div class="hist"><div class="hi"><span>${esc(x.produto)} — tam ${esc(x.tamanho)}</span><small>${dt}</small></div><b class="${x.tipo==='in'?'in':'out'}">${x.tipo==='in'?'+':'-'}${x.qtd}</b><button class="x" title="Remover este registro" onclick="delHist('${esc(x.id)}')">×</button></div>`}).join(''):'<p class="empty">Nenhuma movimentação</p>';
+ $('bLimpar').style.display=todos.length?'':'none';
+ const mais=$('bMais');
+ mais.style.display=todos.length>8?'':'none';
+ mais.textContent=histAll?'Mostrar menos':`Ver tudo (${todos.length})`;
+}
+async function delHist(id){
+ try{await db('historico/'+id,'DELETE');delete historico[id];renderHist();toast('Registro removido')}catch(e){toast(e.message)}
+}
+async function limparHist(){
+ const n=Object.keys(historico).length;
+ if(!n)return toast('O histórico já está vazio');
+ if(!confirm(`Apagar todo o histórico de movimentações (${n} registros)?\n\nO estoque atual não muda, mas o S.A.R deixa de ter esses dados para analisar. Não dá para desfazer.`))return;
+ try{await db('historico','DELETE');historico={};histAll=false;renderHist();toast('Histórico limpo')}catch(e){toast(e.message)}
 }
 function renderLista(){
  const f=$('busca').value.trim().toLowerCase();
@@ -376,28 +448,83 @@ async function gerarPDF(){
 }
 
 // ====== S.A.R (Groq) ======
-function msg(txt,cls){const d=document.createElement('div');d.className='m '+cls;d.textContent=txt;$('chat').appendChild(d);$('chat').scrollTop=1e9;return d}
+// Converte o texto da IA em HTML formatado: **negrito azul** (sem asteriscos), títulos, listas, tabelas.
+function inline(s){
+ s=esc(s);
+ s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+ s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
+ s=s.replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?![*\w])/g,'$1<em>$2</em>');
+ return s.replace(/\*\*/g,''); // remove asteriscos soltos que sobraram
+}
+function md(src){
+ const L=String(src).replace(/\r/g,'').split('\n');
+ let out='',lst=null,i=0;
+ const fecha=()=>{if(lst){out+=`</${lst}>`;lst=null}};
+ while(i<L.length){
+  const ln=L[i];
+  if(!ln.trim()){fecha();i++;continue}
+  // tabela
+  if(/^\s*\|.*\|\s*$/.test(ln)){
+   fecha();const rows=[];
+   while(i<L.length&&/^\s*\|.*\|\s*$/.test(L[i])){rows.push(L[i]);i++}
+   const cel=r=>r.trim().replace(/^\||\|$/g,'').split('|').map(c=>c.trim());
+   const dados=rows.filter(r=>!/^\s*\|?[\s:\-|]+\|?\s*$/.test(r)||!/-/.test(r)).map(cel);
+   if(dados.length){
+    const [h,...b]=dados;
+    out+=`<div class="tw"><table><thead><tr>${h.map(c=>`<th>${inline(c)}</th>`).join('')}</tr></thead><tbody>${b.map(r=>`<tr>${r.map(c=>`<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+   }
+   continue;
+  }
+  let m;
+  if(m=ln.match(/^\s*#{1,6}\s+(.*)$/)){fecha();out+=`<h4>${inline(m[1])}</h4>`}
+  else if(/^\s*([-*_])\1{2,}\s*$/.test(ln)){fecha();out+='<hr>'}
+  else if(m=ln.match(/^\s*[-*•]\s+(.*)$/)){if(lst!=='ul'){fecha();out+='<ul>';lst='ul'}out+=`<li>${inline(m[1])}</li>`}
+  else if(m=ln.match(/^\s*\d+[.)]\s+(.*)$/)){if(lst!=='ol'){fecha();out+='<ol>';lst='ol'}out+=`<li>${inline(m[1])}</li>`}
+  else{fecha();out+=`<p>${inline(ln.trim())}</p>`}
+  i++;
+ }
+ fecha();return out;
+}
+function msg(txt,cls,html){
+ const d=document.createElement('div');d.className='m '+cls;
+ if(html)d.innerHTML=txt;else d.textContent=txt;
+ $('chat').appendChild(d);$('chat').scrollTop=1e9;return d;
+}
+function boasVindas(){
+ $('chat').innerHTML='';
+ msg(md('Olá! Sou o **S.A.R**. Posso analisar **estoque**, **tamanhos**, **giro** e **histórico de movimentações**.\n\nEscolha uma sugestão abaixo ou escreva sua pergunta.'),'a',true);
+}
+function limparChat(){conv=[];boasVindas();$('sug').style.display='';toast('Nova conversa iniciada')}
+function sugerir(b){$('q').value=b.textContent;perguntar()}
 async function perguntar(){
+ if(busy)return;
  const q=$('q').value.trim();if(!q)return;
- $('q').value='';msg(q,'u');
- const w=msg('Analisando...','a');
+ $('q').value='';msg(q,'u');$('sug').style.display='none';
+ busy=true;$('bSend').disabled=true;
+ const w=msg('<span class="dots"><i></i><i></i><i></i></span>','a',true);
  const dados={produtos:Object.values(produtos),historico:Object.values(historico).sort((a,b)=>b.ts-a.ts).slice(0,150).map(h=>({...h,data:new Date(h.ts).toLocaleString('pt-BR')}))};
+ const sys='Você é o S.A.R, sistema de análise de resultados de uma loja de sapatos (vendedora: Leticia). Não aja como assistente conversacional: seja direto, analítico e objetivo, em português.\n'+
+  'Responda só com base nos dados do estoque e histórico abaixo; se algo não estiver nos dados, diga. Use números exatos.\n'+
+  'FORMATAÇÃO (obrigatório): use **negrito** (dois asteriscos) nos nomes de produtos/marcas, tamanhos e números importantes. Comece com 1 frase de conclusão. Use listas com "- " (um item por linha) para enumerar, e títulos curtos com "## " só se houver mais de uma seção. Parágrafos curtos. Não use tabelas, emojis nem blocos de código.\n'+
+  'DADOS: '+JSON.stringify(dados);
+ conv.push({role:'user',content:q});
  try{
   const r=await fetch("https://api.groq.com/openai/v1/chat/completions",{
    method:'POST',
    headers:{'Content-Type':'application/json','Authorization':'Bearer '+rot13(GROQ_KEY_ROT13)},
-   body:JSON.stringify({model:MODELO_IA,temperature:.2,messages:[
-    {role:'system',content:'Você é o S.A.R, sistema de análise de resultados de uma loja de sapatos (vendedora: Leticia). Não aja como assistente conversacional: seja direto, analítico e objetivo, em português. Responda só com base nos dados do estoque e histórico abaixo; se algo não estiver nos dados, diga. Use números exatos.\nDADOS: '+JSON.stringify(dados)},
-    {role:'user',content:q}]})
+   body:JSON.stringify({model:MODELO_IA,temperature:.2,messages:[{role:'system',content:sys},...conv.slice(-8)]})
   });
   const j=await r.json();
   if(!r.ok)throw new Error(j.error?.message||'Erro na API');
-  w.textContent=j.choices[0].message.content;
- }catch(e){w.textContent='Falha: '+e.message}
- $('chat').scrollTop=1e9;
+  const txt=j.choices[0].message.content||'Sem resposta.';
+  conv.push({role:'assistant',content:txt});
+  w.innerHTML=md(txt);
+ }catch(e){conv.pop();w.textContent='Falha: '+e.message}
+ busy=false;$('bSend').disabled=false;
+ $('chat').scrollTop=1e9;$('q').focus();
 }
 
-addLinha();renderNota();carregar();
+boasVindas();addLinha();renderNota();carregar();
 </script>
 </body>
 </html>
